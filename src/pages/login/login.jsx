@@ -1,29 +1,46 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
-import { Form, Input, Button, Alert } from "antd";
+import { Form, Input, Button, notification } from "antd";
 import "./login.sass";
 import logo from "./images/tou.jpg";
+import { instance } from "../../api/requries";
 
 export default class Login extends Component {
   render() {
     const onFinish = (values) => {
-      console.log("Success:", values);
+      window.history.replaceState(
+        "http://localhost:3000/login",
+        "",
+        "http://localhost:3000"
+      );
+      console.log(values);
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+
+      /*const { username, password } = values;
+      instance
+        .post("/login", { username, password })
+        .then(function (response) {
+          window.history.replaceState(
+            "http://localhost:3000/login",
+            "",
+            "http://localhost:3000"
+          );
+          window.location.reload();
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });*/
     };
     const onFinishFailed = () => {
-      ReactDOM.render(
-        <Alert
-          type="error"
-          message="请输入合法的用户名和密码"
-          closable="true"
-          banner
-        />,
-        document.getElementById("alertBox")
-      );
+      notification.open({
+        description: "请输入合法的用户名和密码",
+      });
     };
 
     return (
       <div className="login">
-        <div id="alertBox"></div>
         <header className="login-header">
           <img alt="" src={logo} width="40px" height="40px" />
           <h1 className="login-title">后台管理系统</h1>

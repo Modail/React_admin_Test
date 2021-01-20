@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Form, Input, Button, notification } from "antd";
 import "./login.sass";
-import logo from "./images/tou.jpg";
-import { instance } from "../../api/requries";
+import logo from "../../assets/images/tou.jpg";
+import { reqLogin } from "../../api/reqIndex";
 
 export default class Login extends Component {
   render() {
@@ -17,21 +17,8 @@ export default class Login extends Component {
         window.location.reload();
       }, 2000);
 
-      /*const { username, password } = values;
-      instance
-        .post("/login", { username, password })
-        .then(function (response) {
-          window.history.replaceState(
-            "http://localhost:3000/login",
-            "",
-            "http://localhost:3000"
-          );
-          window.location.reload();
-          console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });*/
+      // const { username, password } = values;
+      // reqLogin({ username, password });
     };
     const onFinishFailed = () => {
       notification.open({

@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Layout } from "antd";
 import { Switch, Redirect, Route } from "react-router-dom";
 import LeftNav from "../../components/left-Nav/left-Nav";
+import HeaderTop from "../../components/header-Top/header-Top";
+import MyFooter from "../../components/footer/footer";
 import Home from "../home/home";
 import Category from "../category/category";
 import Product from "../product/product";
@@ -21,8 +23,10 @@ export default class Admin extends Component {
           <LeftNav></LeftNav>
         </Sider>
         <Layout>
-          <Header>Header</Header>
-          <Content>
+          <Header style={{ padding: "0" }}>
+            <HeaderTop></HeaderTop>
+          </Header>
+          <Content style={{ padding: "20px" }}>
             <Switch>
               <Route path="/home" component={Home} />
               <Route path="/category" component={Category} />
@@ -35,7 +39,9 @@ export default class Admin extends Component {
             </Switch>
             <Redirect to="/home"></Redirect>
           </Content>
-          <Footer>Footer</Footer>
+          <Footer>
+            <MyFooter />
+          </Footer>
         </Layout>
       </Layout>
     );

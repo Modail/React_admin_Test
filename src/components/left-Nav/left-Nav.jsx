@@ -8,27 +8,42 @@ import menuList from "../../config/menuconfig";
 const { SubMenu } = Menu;
 
 export default class LeftNav extends Component {
+  // getMenuNodes_map = (menuList) => {
+  //   return menuList.map((item) => {
+  //     if (!item.children) {
+  //       return (
+  //         <Menu.Item key={item.key} icon={item.icon}>
+  //           <Link to={item.key}>{item.title}</Link>
+  //         </Menu.Item>
+  //       );
+  //     } else {
+  //       return (
+  //         <SubMenu key={item.key} icon={item.icon} title={item.title}>
+  //           {this.getMenuNodes(item.children)}
+  //         </SubMenu>
+  //       );
+  //     }
+  //   }); //用数组map动态渲染页面，有子项是选择使用递归屌用来渲染
+
   getMenuNodes = (menuList) => {
-    return menuList.map((item) => {
+    return menuList.reduce((pre, item) => {
       if (!item.children) {
-        return (
+        pre.push(
           <Menu.Item key={item.key} icon={item.icon}>
             <Link to={item.key}>{item.title}</Link>
           </Menu.Item>
         );
       } else {
-        return (
+        pre.push(
           <SubMenu key={item.key} icon={item.icon} title={item.title}>
             {this.getMenuNodes(item.children)}
           </SubMenu>
         );
       }
-    }); //用数组map动态渲染页面，有子项是选择使用递归
-    /*getMenuNodes =(menuList) =>{
-       return menuList.reduce
-    } 
-    */
-  };
+      return pre;
+    }, []);
+  }; //用数组的reduce方法动态渲染页面，在博客中研究了reduce的用法，有子项是选择使用递归屌用来渲染
+
   render() {
     return (
       <div className="left_Nav">

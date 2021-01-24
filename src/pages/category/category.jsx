@@ -94,10 +94,9 @@ export default class Category extends Component {
       console.log(err);
     }
   };
-  componentWillMount() {
-    this.initColumn();
-  } //第一次渲染提供数据
+
   componentDidMount() {
+    this.initColumn();
     this.initList();
   } //异步获取数据
   render() {

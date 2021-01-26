@@ -6,3 +6,7 @@ export const reqLogin = (username, password) =>
 
 export const reqList = (parentId) =>
   instance.get("manage/category/list", { parentId });
+
+export const reqListUpdate = (categoryId, categoryName) => {
+  return instance.post("manage/category/update", { categoryId, categoryName });
+}; //箭头函数单行没有大括号默认return ，axios请求返回的是数据要return

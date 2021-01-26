@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Card, Table, Button, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { Space } from "antd";
-import { reqList } from "../../api/reqIndex";
+import { reqList, reqListUpdate } from "../../api/reqIndex";
 import Addform from "./components/addForm";
 import Updateform from "./components/updateForm";
 
@@ -30,10 +30,14 @@ export default class Category extends Component {
         width: 200,
         render: (listdata) => (
           <Space size="middle">
-            <a onClick={() => this.showUpdate(listdata)}>修改商品 </a>
+            <a href onClick={() => this.showUpdate(listdata)}>
+              修改商品{" "}
+            </a>
             {/*向事件回调函数传递参数，先定义一个匿名函数外包，再调用定义的函数*/}
             {this.state.parentId === "0" ? (
-              <a onClick={() => this.showSublist(listdata)}>查看子分类</a>
+              <a href onClick={() => this.showSublist(listdata)}>
+                查看子分类
+              </a>
             ) : null}
           </Space>
         ),
@@ -52,6 +56,7 @@ export default class Category extends Component {
 
   handleCancel = () => {
     this.setState({ showstatus: 0 });
+    this.updateform.resetFields();
   }; //取消对话框的显示
 
   showAdd = () => {
@@ -60,7 +65,8 @@ export default class Category extends Component {
 
   showUpdate = (listdata) => {
     //保存状态对象
-    this.rowlistdata = listdata; //listdat在column中为对象传入
+    this.rowlistName = listdata.name; //listdat在column中为对象传入
+
     this.setState({ showstatus: 2 });
   }; //删除对话框的显示
 
@@ -68,20 +74,41 @@ export default class Category extends Component {
     console.log("add");
   }; //添加分类的函数
 
-  UpdateList = () => {
-    console.log("Update");
+  getUpdataRef = (updateform) => {
+    this.updateform = updateform;
+  }; //获得updateform实例
+  UpdateList = async () => {
+    //1.发送请求更新
+    const categoryName = this.updateform.getFieldValue("updateinput");
+    const categoryId = this.rowlistdata._id;
+    try {
+      const result = await reqListUpdate(categoryId, categoryName);
+      console.log(result);
+      if (result.status === 0) {
+        this.initList(); //2.成功的话更新列表
+      } else {
+        console.log("更新失败");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+    this.updateform.resetFields();
+    //3.关闭对话框
+    this.setState({ status: 0 });
+    //这里更新了状态，ref会重新加载，即调用这个函数ref调用两次，console出来的结果为undefined
   }; //修改分类的函数
 
   initList = async () => {
     const { parentId } = this.state;
     try {
-      const { data } = await reqList(parentId); //await后获得的是promise处理的结果，解构赋值获得response.data,即返回数据
-      if (data.status === 0) {
+      const result = await reqList(parentId); //await后获得的是promise处理的结果，在axios拦截器返回成功的data，避免了不必要的代码冗余
+
+      if (result.status === 0) {
         if (parentId === "0") {
-          const listdata = data.data;
+          const listdata = result.data;
           this.setState({ listdata: listdata });
         } else {
-          const sublistdata = data.data;
+          const sublistdata = result.data;
           this.setState({
             sublistdata: sublistdata,
           });
@@ -111,7 +138,7 @@ export default class Category extends Component {
         "一级分类"
       ) : (
         <span>
-          <a onClick={this.showlist}>一级分类</a>
+          <button onClick={this.showlist}>一级分类</button>
           ---
           <span>{parentName}</span>
         </span>
@@ -150,7 +177,10 @@ export default class Category extends Component {
           onOk={this.UpdateList}
           onCancel={this.handleCancel}
         >
-          <Updateform rowlistdata={this.rowlistdata} />
+          <Updateform
+            rowlistName={this.rowlistName}
+            getUpdataRef={this.getUpdataRef}
+          />
         </Modal>
       </>
     );

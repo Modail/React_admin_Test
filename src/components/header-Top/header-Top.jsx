@@ -51,7 +51,7 @@ export default class HeaderTop extends Component {
       <div className="header-container">
         <div className="header-top">
           <span>欢迎，admin</span>
-          <a href="#" onClick={this.Logout}>
+          <a href onClick={this.Logout}>
             退出
           </a>
         </div>

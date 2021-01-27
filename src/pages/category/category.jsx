@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Card, Table, Button, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { Space } from "antd";
-import { reqList, reqListUpdate } from "../../api/reqIndex";
+import { reqList, reqListUpdate, reqListAdd } from "../../api/reqIndex";
 import Addform from "./components/addForm";
 import Updateform from "./components/updateForm";
 
@@ -54,10 +54,15 @@ export default class Category extends Component {
     this.setState({ parentId: "0", parentName: "", sublistdata: [] });
   }; //返回一级分类 因为初始化保留了一级分类数组没必要再发请求获取，这是更新对应状态即可
 
-  handleCancel = () => {
+  handleCancelup = () => {
     this.setState({ showstatus: 0 });
     this.updateform.resetFields();
-  }; //取消对话框的显示
+  }; //取消更新对话框的显示
+
+  handleCanceladd = () => {
+    this.setState({ showstatus: 0 });
+    this.addform.resetFields();
+  }; //取消添加对话框的显示
 
   showAdd = () => {
     this.setState({ showstatus: 1 });
@@ -65,13 +70,27 @@ export default class Category extends Component {
 
   showUpdate = (listdata) => {
     //保存状态对象
-    this.rowlistName = listdata.name; //listdat在column中为对象传入
-
+    this.rowlistdata = listdata; //listdata在column中为对象传入
+    console.log(listdata.name);
     this.setState({ showstatus: 2 });
-  }; //删除对话框的显示
+  }; //更新对话框的显示
 
-  addList = () => {
-    console.log("add");
+  getAddRef = (addform) => {
+    this.addform = addform;
+  }; //获得addform实例
+  addList = async () => {
+    //1.发送请求添加
+    const addId = this.addform.getFieldValue("addselect");
+    const addName = this.addform.getFieldValue("addinput");
+    const result = await reqListAdd(addId, addName);
+    if (result.status === 0) {
+      console.log("添加成功");
+      if (addId === this.state.parentId) this.initList(); //根据条件选择是否重新渲染
+    } else {
+      console.log("添加失败");
+    }
+    this.addList.resetFields();
+    this.setState({ showstatus: 0 });
   }; //添加分类的函数
 
   getUpdataRef = (updateform) => {
@@ -79,11 +98,10 @@ export default class Category extends Component {
   }; //获得updateform实例
   UpdateList = async () => {
     //1.发送请求更新
-    const categoryName = this.updateform.getFieldValue("updateinput");
     const categoryId = this.rowlistdata._id;
+    const categoryName = this.updateform.getFieldValue("updateinput");
     try {
       const result = await reqListUpdate(categoryId, categoryName);
-      console.log(result);
       if (result.status === 0) {
         this.initList(); //2.成功的话更新列表
       } else {
@@ -94,7 +112,7 @@ export default class Category extends Component {
     }
     this.updateform.resetFields();
     //3.关闭对话框
-    this.setState({ status: 0 });
+    this.setState({ showstatus: 0 });
     //这里更新了状态，ref会重新加载，即调用这个函数ref调用两次，console出来的结果为undefined
   }; //修改分类的函数
 
@@ -138,7 +156,9 @@ export default class Category extends Component {
         "一级分类"
       ) : (
         <span>
-          <button onClick={this.showlist}>一级分类</button>
+          <a href onClick={this.showlist}>
+            一级分类
+          </a>
           ---
           <span>{parentName}</span>
         </span>
@@ -166,19 +186,23 @@ export default class Category extends Component {
           width="500px"
           visible={showstatus === 1}
           onOk={this.addList}
-          onCancel={this.handleCancel}
+          onCancel={this.handleCanceladd}
         >
-          <Addform />
+          <Addform
+            listdata={this.state.listdata}
+            parentId={this.state.parentId}
+            getAddRef={this.getAddRef}
+          />
         </Modal>
         <Modal
           title="修改分类"
           width="500px"
           visible={showstatus === 2}
           onOk={this.UpdateList}
-          onCancel={this.handleCancel}
+          onCancel={this.handleCancelup}
         >
           <Updateform
-            rowlistName={this.rowlistName}
+            rowlistdata={this.rowlistdata}
             getUpdataRef={this.getUpdataRef}
           />
         </Modal>

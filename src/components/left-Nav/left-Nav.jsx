@@ -54,8 +54,8 @@ export default class LeftNav extends Component {
         <div className="menu_container">
           <Menu
             style={{ width: 200 }}
-            defaultSelectedKeys={["/home"]}
-            defaultOpenKeys={["product"]}
+            defaultSelectedKeys="/home"
+            defaultOpenKeys="product"
             theme="dark"
             mode="inline"
           >

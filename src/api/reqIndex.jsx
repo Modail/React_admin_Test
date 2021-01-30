@@ -14,3 +14,7 @@ export const reqListUpdate = (categoryId, categoryName) => {
 export const reqListAdd = (parentId, categoryName) => {
   return instance.post("manage/category/add", { parentId, categoryName });
 };
+
+export const reqProduct = (pageNum, pageSize) => {
+  return instance.get("manage/product/list", { pageNum, pageSize });
+};

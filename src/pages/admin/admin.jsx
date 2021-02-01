@@ -29,16 +29,16 @@ export default class Admin extends Component {
             </Header>
             <Content style={{ padding: "20px" }}>
               <Switch>
-                <Redirect from="/" exact to="/home" />
-                <Route exact path="/home" component={Home} />
-                <Route exact path="/category" component={Category} />
-                <Route exact path="/product" component={Product} />
-                <Route exact path="/user" component={User} />
-                <Route exact path="/role" component={Role} />
-                <Route exact path="/bar" component={Bar} />
-                <Route exact path="/line" component={Line} />
-                <Route exact path="/pie" component={Pie} />
+                <Route path="/home" component={Home} />
+                <Route path="/category" component={Category} />
+                <Route path="/product" component={Product} />
+                <Route path="/user" component={User} />
+                <Route path="/role" component={Role} />
+                <Route path="/bar" component={Bar} />
+                <Route path="/line" component={Line} />
+                <Route path="/pie" component={Pie} />
               </Switch>
+              <Redirect to="/home" />
             </Content>
             <Footer>
               <MyFooter />

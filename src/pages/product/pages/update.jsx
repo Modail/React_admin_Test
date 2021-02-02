@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Card, Input, Form, Upload, Button, Cascader } from "antd";
-import ImgCrop from "antd-img-crop";
+import { Card, Input, Form, Button, Cascader } from "antd";
+import PicturesWall from "../component/pictures-wall";
+import RichTextEditor from "../component/richTextedit";
 
 const { TextArea } = Input;
 export default class ProductUpdate extends Component {
@@ -67,15 +68,10 @@ export default class ProductUpdate extends Component {
             <Cascader options={options} placeholder="Please select" />
           </Form.Item>
           <Form.Item label="商品图片" required>
-            <ImgCrop rotate>
-              <Upload
-                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                listType="picture-card"
-              ></Upload>
-            </ImgCrop>
+            <PicturesWall />
           </Form.Item>
           <Form.Item label="商品详情" required>
-            <div>详情</div>
+            <RichTextEditor />
           </Form.Item>
           <Button type="primary">提交</Button>
         </Form>

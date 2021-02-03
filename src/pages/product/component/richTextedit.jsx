@@ -1,29 +1,25 @@
 import React, { Component } from "react";
-
 import { Editor } from "react-draft-wysiwyg";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 export default class RichTextEditor extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      contentState: {}, // ContentState JSON
-    };
-  }
+  state = {
+    editorState: undefined,
+  };
 
-  onContentStateChange = (contentState) => {
+  onEditorStateChange = (editorState) => {
     this.setState({
-      contentState,
+      editorState,
     });
   };
 
   render() {
-    const { contentState } = this.state;
     return (
       <Editor
-        initialContentState={contentState}
         wrapperClassName="demo-wrapper"
         editorClassName="demo-editor"
-        onContentStateChange={this.onContentStateChange}
+        editorStyle={{ border: "1px solid black", minHeight: 200 }}
+        onEditorStateChange={this.onEditorStateChange}
       />
     );
   }

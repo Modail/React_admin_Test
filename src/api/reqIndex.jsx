@@ -18,3 +18,7 @@ export const reqListAdd = (parentId, categoryName) => {
 export const reqProduct = (pageNum, pageSize) => {
   return instance.get("manage/product/list", { pageNum, pageSize });
 };
+
+export const reqRoles = () => {
+  return instance.get("/manage/role/list");
+};

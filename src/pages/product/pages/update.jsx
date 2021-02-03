@@ -70,7 +70,7 @@ export default class ProductUpdate extends Component {
           <Form.Item label="商品图片" required>
             <PicturesWall />
           </Form.Item>
-          <Form.Item label="商品详情" required>
+          <Form.Item label="商品详情" required style={{ width: 800 }}>
             <RichTextEditor />
           </Form.Item>
           <Button type="primary">提交</Button>

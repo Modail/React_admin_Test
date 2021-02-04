@@ -22,3 +22,7 @@ export const reqProduct = (pageNum, pageSize) => {
 export const reqRoles = () => {
   return instance.get("/manage/role/list");
 };
+
+export const reqAddroles = (roleName) => {
+  return instance.post("manage/role/add", { roleName });
+};

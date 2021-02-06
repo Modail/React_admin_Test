@@ -25,8 +25,8 @@ export default class AddrolesRightform extends Component {
   render() {
     const { name, menus } = this.props.role;
     const treeData = this.getTreeNodes(menuList);
-    console.log(treeData);
-    console.log(menus);
+    // console.log(treeData);
+    // console.log(menus);
     return (
       <Form layout="vertical">
         <Form.Item label="角色名称" name="addrolesRightinput">

@@ -26,3 +26,7 @@ export const reqRoles = () => {
 export const reqAddroles = (roleName) => {
   return instance.post("manage/role/add", { roleName });
 };
+
+export const reqUser = () => {
+  return instance.get("manage/user/list");
+};
